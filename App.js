@@ -1,20 +1,50 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import FavoritesScreen from './src/screens/FavoritesScreen';
+import { Colors } from './src/constants/Styles';
+import IconComponent from './src/components/ui/IconComponent';
+import AddFavoriteScreen from './src/screens/AddFavoriteScreen';
+import FavoriteDetailScreen from './src/screens/FavoriteDetailScreen';
+import MapScreen from './src/screens/MapScreen';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+  return <Navigation />;
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+function Navigation() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: { backgroundColor: Colors.primary100 },
+          contentStyle: { backgroundColor: Colors.background },
+        }}
+      >
+        <Stack.Screen
+          name="FavoritesScreen"
+          component={FavoritesScreen}
+          options={{
+            headerTitle: 'Your Favorite locations',
+          }}
+        />
+        <Stack.Screen
+          name="AddFavoriteScreen"
+          component={AddFavoriteScreen}
+          options={{
+            headerTitle: 'Add a new place',
+          }}
+        />
+        <Stack.Screen name="FavoriteDetailScreen" component={FavoriteDetailScreen} />
+        <Stack.Screen
+          name="MapScreen"
+          component={MapScreen}
+          options={{
+            headerTitle: 'Map',
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
