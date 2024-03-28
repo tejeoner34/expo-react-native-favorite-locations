@@ -1,24 +1,5 @@
 import { createContext } from 'react';
 import { useState } from 'react';
-import { Favorite } from '../../models/favorite';
-
-const favoritesList = [
-  new Favorite('image1.jpg', 'Golden Gate Bridge', {
-    address: 'test addres jejejeejej',
-  }),
-  new Favorite('image2.jpg', 'Empire State Building', {
-    address: 'test addres jejejeejej',
-  }),
-  new Favorite('image3.jpg', 'The Louvre Museum', {
-    address: 'test addres jejejeejej',
-  }),
-  new Favorite('image4.jpg', 'The Great Wall of China', {
-    address: 'test addres jejejeejej',
-  }),
-  new Favorite('image5.jpg', 'The Colosseum', {
-    address: 'test addres jejejeejej',
-  }),
-];
 
 export const FavoritesContext = createContext({
   storeFavorite: (favorite) => {},
@@ -27,7 +8,7 @@ export const FavoritesContext = createContext({
 });
 
 export function FavoritesContextProvider({ children }) {
-  const [favorites, setFavorites] = useState(favoritesList);
+  const [favorites, setFavorites] = useState([]);
 
   function storeFavorite(favorite) {
     setFavorites((prevFavorites) => [...prevFavorites, favorite]);
