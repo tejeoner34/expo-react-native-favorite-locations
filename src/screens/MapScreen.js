@@ -7,11 +7,15 @@ import IconComponent from '../components/ui/IconComponent';
 import { useLocation } from '../hooks/useLocation';
 
 export default function MapScreen({ navigation }) {
-  const { getCurrentLocation } = useLocation();
+  const { getCurrentLocation, getAddress } = useLocation();
   const [location, setLocation] = useState();
-  const handleChooseLocation = (ev) => {
+  const handleChooseLocation = async (ev) => {
     const { coordinate } = ev.nativeEvent;
-    setLocation(coordinate);
+    const address = await getAddress(coordinate);
+    setLocation({
+      ...coordinate,
+      address,
+    });
   };
 
   const onSaveLocation = () => {

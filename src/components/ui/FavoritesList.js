@@ -12,7 +12,7 @@ export default function FavoritesList({ favoritesList }) {
     <View>
       <FlatList
         data={favoritesList}
-        renderItem={(item) => renderItems(item)}
+        renderItem={(item) => renderItems(item.item)}
         keyExtractor={(item) => item.location?.latitude}
       />
     </View>

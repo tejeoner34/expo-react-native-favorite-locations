@@ -11,15 +11,23 @@ export function useLocation() {
     }
 
     const location = await Location.getCurrentPositionAsync({});
+    const address = await getAddress(location.coords);
     return {
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA,
+      address,
     };
+  };
+
+  const getAddress = async (location) => {
+    const reverseGeocode = await Location.reverseGeocodeAsync(location);
+    return reverseGeocode[0].formattedAddress;
   };
 
   return {
     getCurrentLocation,
+    getAddress,
   };
 }
