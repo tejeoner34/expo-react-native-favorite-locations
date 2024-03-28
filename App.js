@@ -2,15 +2,19 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import FavoritesScreen from './src/screens/FavoritesScreen';
 import { Colors } from './src/constants/Styles';
-import IconComponent from './src/components/ui/IconComponent';
 import AddFavoriteScreen from './src/screens/AddFavoriteScreen';
 import FavoriteDetailScreen from './src/screens/FavoriteDetailScreen';
 import MapScreen from './src/screens/MapScreen';
+import { FavoritesContextProvider } from './src/store/favoritesContext';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  return <Navigation />;
+  return (
+    <FavoritesContextProvider>
+      <Navigation />
+    </FavoritesContextProvider>
+  );
 }
 
 function Navigation() {

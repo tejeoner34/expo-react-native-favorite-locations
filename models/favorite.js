@@ -1,6 +1,6 @@
 export class Favorite {
-  constructor(img, title, location) {
-    this.img = img;
+  constructor(image, title, location) {
+    this.image = image;
     this.title = title;
     this.location = location;
   }

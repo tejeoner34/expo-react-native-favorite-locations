@@ -1,64 +1,33 @@
-import { ScrollView, View } from 'react-native';
-import React, { useState } from 'react';
+import { ScrollView } from 'react-native';
 import { BaseStyles } from '../constants/Styles';
 import CustomInput from '../components/ui/CustomInput';
 import PreviewCard from '../components/ui/PreviewCard';
 import CustomButton from '../components/ui/CustomButton';
+import { useAddFavorite } from '../hooks/useAddFavorite';
+import { useEffect } from 'react';
 
-import * as ImagePicker from 'expo-image-picker';
-import * as Location from 'expo-location';
+export default function AddFavoriteScreen({ navigation, route }) {
+  const {
+    handleCreateFavorite,
+    newFavorite,
+    setCurrentLocation,
+    setFavoriteTitle,
+    setImage,
+    setLocation,
+  } = useAddFavorite();
 
-export default function AddFavoriteScreen() {
-  const [newFavorite, setNewFavorite] = useState({
-    title: '',
-    image: '',
-    location: '',
-  });
-
-  // LOCATION
-  const getCurrentLocation = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') {
-      console.log('Permission to access location was denied', status);
-      return;
-    }
-
-    let location = await Location.getCurrentPositionAsync({});
-    console.log('location');
-    console.log(location.coords);
-    setNewFavorite((prev) => ({
-      ...prev,
-      location: location.coords,
-    }));
+  const navigateToMap = () => {
+    navigation.navigate('MapScreen');
   };
 
-  const handleInputChange = (inputValue) => {
-    setNewFavorite((prev) => ({
-      ...prev,
-      title: inputValue,
-    }));
-  };
-  // We can encapsulate all this in a custom hook
-  const pickImage = async () => {
-    let result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setNewFavorite((prev) => ({
-        ...prev,
-        image: result.assets[0].uri,
-      }));
-    }
+  const onSubmit = () => {
+    if (handleCreateFavorite()) navigation.goBack();
   };
 
   const TAKE_PICTURE_BUTTON = [
     {
       icon: 'camera',
-      action: pickImage,
+      action: setImage,
       text: 'Add to favorites',
     },
   ];
@@ -66,23 +35,27 @@ export default function AddFavoriteScreen() {
   const LOCATION_BUTTONS = [
     {
       icon: 'location',
-      action: getCurrentLocation,
+      action: setCurrentLocation,
       text: 'Locate User',
     },
     {
       icon: 'map',
-      action: getCurrentLocation,
+      action: navigateToMap,
       text: 'Pick on Map',
     },
   ];
+
+  useEffect(() => {
+    if (route.params?.location) {
+      setLocation(route.params.location);
+    }
+  }, [route.params?.location]);
   return (
     <ScrollView contentContainerStyle={BaseStyles.space}>
-      <View>
-        <CustomInput lable="Title" onChange={handleInputChange} />
-      </View>
+      <CustomInput lable="Title" onChange={setFavoriteTitle} />
       <PreviewCard previewImg={newFavorite.image} buttons={TAKE_PICTURE_BUTTON} />
       <PreviewCard location={newFavorite.location} buttons={LOCATION_BUTTONS} type="map" />
-      <CustomButton text="Add Place" type="secondary" />
+      <CustomButton text="Add Place" type="secondary" action={onSubmit} />
     </ScrollView>
   );
 }
