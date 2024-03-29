@@ -1,10 +1,10 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { Colors } from '../../constants/Styles';
 
-export default function FavoriteItem({ favorite }) {
+export default function FavoriteItem({ favorite, onPress }) {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.imgContainer}>
         <Image source={{ uri: favorite.image }} style={{ width: '100%', height: '100%' }} />
       </View>
@@ -12,7 +12,7 @@ export default function FavoriteItem({ favorite }) {
         <Text style={styles.title}>{favorite.title}</Text>
         <Text style={styles.description}>{favorite.location.address}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

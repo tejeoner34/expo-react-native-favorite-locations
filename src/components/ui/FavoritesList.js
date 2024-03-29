@@ -1,22 +1,26 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 import React from 'react';
 import FavoriteItem from './FavoriteItem';
 
-function renderItems(itemData) {
-  console.log(itemData);
-  return <FavoriteItem favorite={itemData} />;
+function renderItems(itemData, onItemClick) {
+  return (
+    <FavoriteItem
+      favorite={itemData}
+      onPress={() => {
+        onItemClick(itemData);
+      }}
+    />
+  );
 }
 
-export default function FavoritesList({ favoritesList }) {
+export default function FavoritesList({ favoritesList, onItemClick }) {
   return (
     <View>
       <FlatList
         data={favoritesList}
-        renderItem={(item) => renderItems(item.item)}
-        keyExtractor={(item) => item.location?.latitude}
+        renderItem={(item) => renderItems(item.item, onItemClick)}
+        keyExtractor={(item, index) => index}
       />
     </View>
   );
 }
-
-const styles = StyleSheet.create({});

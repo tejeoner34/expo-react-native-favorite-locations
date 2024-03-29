@@ -5,6 +5,7 @@ import MapView, { Marker } from 'react-native-maps';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import IconComponent from '../components/ui/IconComponent';
 import { useLocation } from '../hooks/useLocation';
+import { handleNavigate } from '../utils/navigation';
 
 export default function MapScreen({ navigation }) {
   const { getCurrentLocation, getAddress } = useLocation();
@@ -19,7 +20,7 @@ export default function MapScreen({ navigation }) {
   };
 
   const onSaveLocation = () => {
-    navigation.navigate('AddFavoriteScreen', { location });
+    handleNavigate(navigation, 'AddFavoriteScreen', { location });
   };
 
   useLayoutEffect(() => {

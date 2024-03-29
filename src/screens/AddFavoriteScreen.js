@@ -5,6 +5,7 @@ import PreviewCard from '../components/ui/PreviewCard';
 import CustomButton from '../components/ui/CustomButton';
 import { useAddFavorite } from '../hooks/useAddFavorite';
 import { useEffect } from 'react';
+import { handleNavigate } from '../utils/navigation';
 
 export default function AddFavoriteScreen({ navigation, route }) {
   const {
@@ -15,10 +16,6 @@ export default function AddFavoriteScreen({ navigation, route }) {
     setImage,
     setLocation,
   } = useAddFavorite();
-
-  const navigateToMap = () => {
-    navigation.navigate('MapScreen');
-  };
 
   const onSubmit = () => {
     if (handleCreateFavorite()) navigation.goBack();
@@ -40,7 +37,7 @@ export default function AddFavoriteScreen({ navigation, route }) {
     },
     {
       icon: 'map',
-      action: navigateToMap,
+      action: () => handleNavigate(navigation, 'MapScreen'),
       text: 'Pick on Map',
     },
   ];

@@ -10,7 +10,7 @@ export const Colors = {
 };
 
 export const BaseStyles = {
-  container: { flex: 1, padding: 20, gap: 20 },
+  container: { flex: 1, gap: 20 },
   space: { padding: 20, gap: 20 },
   center: { alignItems: 'center', justifyContent: 'center' },
 };
