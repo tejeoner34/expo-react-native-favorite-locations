@@ -6,35 +6,24 @@ import AddFavoriteScreen from './src/screens/AddFavoriteScreen';
 import FavoriteDetailScreen from './src/screens/FavoriteDetailScreen';
 import MapScreen from './src/screens/MapScreen';
 import { FavoritesContextProvider } from './src/store/favoritesContext';
-import { useEffect, useState } from 'react';
-import { SQLiteDatabase } from './src/utils/database';
 import * as SplashScreen from 'expo-splash-screen';
+import { FavoriteLocationsRepositoryImpl } from './src/infrastructure/repositories/favoriteLocationsRepositoryImpl';
+import { SQLiteFavoriteLocationsDS } from './src/infrastructure/datasources/SQLiteFavoriteLocationsDS';
+import { useStartApp } from './src/hooks/useStartApp';
 
 const Stack = createNativeStackNavigator();
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
-  const [isDbLoaded, setisDbLoaded] = useState(false);
-  const db = new SQLiteDatabase();
-  useEffect(() => {
-    async function initializeDb() {
-      try {
-        await db.init();
-        setisDbLoaded(true);
-      } catch (error) {
-        console.log(error);
-      } finally {
-      }
-    }
-    initializeDb();
-  }, []);
+  const db = new FavoriteLocationsRepositoryImpl(new SQLiteFavoriteLocationsDS());
+  const { isDbLoaded } = useStartApp({ dataSource: db });
 
   if (isDbLoaded) {
     SplashScreen.hideAsync();
   }
 
   return (
-    <FavoritesContextProvider>
+    <FavoritesContextProvider service={db}>
       <Navigation />
     </FavoritesContextProvider>
   );

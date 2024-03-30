@@ -1,4 +1,4 @@
-import { useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { View } from 'react-native';
 import IconComponent from '../components/ui/IconComponent';
 import { BaseStyles } from '../constants/Styles';
@@ -7,7 +7,11 @@ import FavoritesList from '../components/ui/FavoritesList';
 import { handleNavigate } from '../utils/navigation';
 
 export default function FavoritesScreen({ navigation }) {
-  const { favorites } = useFavoritesContext();
+  const { favorites, fetchFavorites } = useFavoritesContext();
+
+  useEffect(() => {
+    fetchFavorites();
+  }, []);
 
   useLayoutEffect(() => {
     navigation.setOptions({
